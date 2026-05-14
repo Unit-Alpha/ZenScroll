@@ -31,10 +31,15 @@ $ProfileBase = "$env:APPDATA\zen\Profiles"
 $Profile = $null
 
 if (Test-Path $ProfileBase) {
-    # Prefer a profile whose name contains "default" or "release"
+    # Prefer a profile whose name contains "release", then "default"
     $Profile = Get-ChildItem $ProfileBase -Directory |
-        Where-Object { $_.Name -imatch "default|release" } |
+        Where-Object { $_.Name -imatch "release" } |
         Select-Object -First 1
+    if (-not $Profile) {
+        $Profile = Get-ChildItem $ProfileBase -Directory |
+            Where-Object { $_.Name -imatch "default" } |
+            Select-Object -First 1
+    }
     if (-not $Profile) {
         $Profile = Get-ChildItem $ProfileBase -Directory | Select-Object -First 1
     }
