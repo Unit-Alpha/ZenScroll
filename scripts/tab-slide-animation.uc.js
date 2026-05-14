@@ -146,12 +146,18 @@
     const oldPanels   = getPanelsForTabs(oldGroupTabs).filter(p => !newGroupIds.has(p.id));
     const newPanels   = getPanelsForTabs(newGroupTabs);
 
-    // Lock outgoing panel dimensions before the container layout changes.
+    // Lock outgoing panel dimensions and position before the container layout changes.
+    // Position lock is needed for split panels: their inset uses percentages (e.g. left: 50%),
+    // so a container width change (tabbox margin-right toggling) shifts them in pixels.
     const oldPanelHeights = new Map();
     const oldPanelWidths  = new Map();
+    const oldPanelLefts   = new Map();
+    const oldPanelTops    = new Map();
     for (const p of oldPanels) {
       oldPanelHeights.set(p.id, p.offsetHeight);
       oldPanelWidths.set(p.id, p.offsetWidth);
+      oldPanelLefts.set(p.id, p.offsetLeft);
+      oldPanelTops.set(p.id, p.offsetTop);
     }
 
     // Lock the container to its final margin-top immediately so incoming panels
@@ -183,6 +189,10 @@
       if (h !== undefined) p.style.height = h + 'px';
       const w = oldPanelWidths.get(p.id);
       if (w !== undefined) p.style.width = w + 'px';
+      const l = oldPanelLefts.get(p.id);
+      if (l !== undefined) { p.style.left = l + 'px'; p.style.right = 'auto'; }
+      const t = oldPanelTops.get(p.id);
+      if (t !== undefined) { p.style.top = t + 'px'; p.style.bottom = 'auto'; }
     }
     for (const p of newPanels) {
       p.classList.add("zen-slide-in");
@@ -239,6 +249,10 @@
           p.classList.remove("zen-slide-out");
           p.style.removeProperty("height");
           p.style.removeProperty("width");
+          p.style.removeProperty("left");
+          p.style.removeProperty("right");
+          p.style.removeProperty("top");
+          p.style.removeProperty("bottom");
           anim.cancel();
           releaseMarginLock();
           if (tab?.linkedBrowser) delete tab.linkedBrowser.zenModeActive;
