@@ -33,19 +33,29 @@ if [[ "$(uname)" == "Darwin" ]]; then
 fi
 
 PROFILE=""
-if [[ -d "$ZEN_PROFILES_DIR" ]]; then
-  # Prefer a profile directory whose name contains "default" or "release"
+PROFILES_INI="$ZEN_PROFILES_DIR/profiles.ini"
+
+if [[ -f "$PROFILES_INI" ]]; then
+  # Most reliable: use the path from the [Install...] section, which is what Zen
+  # itself reads to decide which profile to open for this installation.
+  rel_path=$(awk '/^\[Install/{found=1} found && /^Default=/{sub(/^Default=/,""); print; exit}' "$PROFILES_INI")
+  if [[ -n "$rel_path" && -d "$ZEN_PROFILES_DIR/$rel_path" ]]; then
+    PROFILE="$ZEN_PROFILES_DIR/$rel_path"
+  fi
+fi
+
+# Fallback: profile whose name contains "release"
+if [[ -z "$PROFILE" && -d "$ZEN_PROFILES_DIR" ]]; then
   while IFS= read -r dir; do
-    name="$(basename "$dir")"
-    if [[ "$name" =~ [Dd]efault|[Rr]elease ]]; then
-      PROFILE="$dir"
-      break
+    if [[ "$(basename "$dir")" =~ [Rr]elease ]]; then
+      PROFILE="$dir"; break
     fi
   done < <(find "$ZEN_PROFILES_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
-  # Fall back to first profile found
-  if [[ -z "$PROFILE" ]]; then
-    PROFILE="$(find "$ZEN_PROFILES_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
-  fi
+fi
+
+# Final fallback: first profile directory found
+if [[ -z "$PROFILE" && -d "$ZEN_PROFILES_DIR" ]]; then
+  PROFILE="$(find "$ZEN_PROFILES_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
 fi
 
 if [[ -z "$PROFILE" ]]; then

@@ -27,22 +27,35 @@ if (-not $ZenApp) {
 }
 
 # ── Locate Zen profile ────────────────────────────────────────────────────────
-$ProfileBase = "$env:APPDATA\zen\Profiles"
+$ProfileBase = "$env:APPDATA\zen"
+$ProfilesIni = "$ProfileBase\profiles.ini"
 $Profile = $null
 
-if (Test-Path $ProfileBase) {
-    # Prefer a profile whose name contains "release", then "default"
+if (Test-Path $ProfilesIni) {
+    # Most reliable: use the path from the [Install...] section, which is what Zen
+    # itself reads to decide which profile to open for this installation.
+    $inInstall = $false
+    foreach ($line in (Get-Content $ProfilesIni)) {
+        if ($line -match '^\[Install') { $inInstall = $true; continue }
+        if ($inInstall -and $line -match '^\[') { $inInstall = $false }
+        if ($inInstall -and $line -match '^Default=(.+)') {
+            $relPath = $Matches[1].Trim()
+            $candidate = Join-Path $ProfileBase $relPath
+            if (Test-Path $candidate) { $Profile = Get-Item $candidate; break }
+        }
+    }
+}
+
+# Fallback: profile whose name contains "release"
+if (-not $Profile -and (Test-Path $ProfileBase)) {
     $Profile = Get-ChildItem $ProfileBase -Directory |
-        Where-Object { $_.Name -imatch "release" } |
+        Where-Object { $_.Name -imatch 'release' } |
         Select-Object -First 1
-    if (-not $Profile) {
-        $Profile = Get-ChildItem $ProfileBase -Directory |
-            Where-Object { $_.Name -imatch "default" } |
-            Select-Object -First 1
-    }
-    if (-not $Profile) {
-        $Profile = Get-ChildItem $ProfileBase -Directory | Select-Object -First 1
-    }
+}
+
+# Final fallback: first profile directory found
+if (-not $Profile -and (Test-Path $ProfileBase)) {
+    $Profile = Get-ChildItem $ProfileBase -Directory | Select-Object -First 1
 }
 
 if (-not $Profile) {
