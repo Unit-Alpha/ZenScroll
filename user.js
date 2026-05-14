@@ -1,0 +1,14 @@
+// zen-tab-animation preferences
+// These are read on every Zen startup. Edit values here or in about:config.
+
+// Animation duration in milliseconds (default: 500)
+user_pref("userscripts.tabslide.duration", 500);
+
+// Slide top/bottom instead of left/right (default: false)
+user_pref("userscripts.tabslide.vertical", false);
+
+// Flip the visual slide direction without changing tab order (default: false)
+user_pref("userscripts.tabslide.invertAnimation", false);
+
+// Invert the Shift+Scroll direction (default: false)
+user_pref("userscripts.tabslide.invertScroll", false);
