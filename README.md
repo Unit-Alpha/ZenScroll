@@ -32,7 +32,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 1. Copies `fx-autoconfig` files into the Zen application directory.
    This is a one-time loader that enables `.uc.js` userscripts in Zen/Firefox.
 2. Copies the userscript loader (`chrome/utils/`) into your Zen profile.
-3. Copies the three userscripts into `chrome/JS/` in your profile.
+3. Copies the four userscripts into `chrome/JS/` in your profile.
 
 Restart Zen Browser after installation.
 
@@ -49,6 +49,7 @@ Alternatively you can remove files manually. The userscripts are in your profile
 - `tab-slide-animation.uc.js`
 - `shift-scroll-tabs.uc.js`
 - `split-focus-follows-mouse.uc.js`
+- `split-view-drag.uc.js`
 
 The fx-autoconfig files can stay if you want to use other userscripts later; they don't do anything without scripts present.
 
@@ -62,7 +63,9 @@ All options are set in `about:config` and take effect immediately without restar
 | `userscripts.tabslide.vertical` | boolean | `false` | Slide top/bottom instead of left/right |
 | `userscripts.tabslide.invertAnimation` | boolean | `false` | Flip the visual slide direction (tab order unchanged) |
 | `userscripts.tabslide.invertScroll` | boolean | `false` | Invert the Shift+Scroll direction |
-| `userscripts.tabslide.splitFocusFollowsMouse` | boolean | `false` | In split view, hovering the mouse over a panel makes it the active browser — so reload/back/forward act on the panel under the cursor without needing to click it first |
+| `userscripts.tabslide.splitFocusFollowsMouse` | boolean | `true` | In split view, hovering the mouse over a panel makes it the active browser — so reload/back/forward act on the panel under the cursor without needing to click it first. Hold **Shift** while hovering to temporarily suppress this (useful when you need to move the mouse across other panels to reach a button without accidentally switching focus). |
+| `userscripts.tabslide.hideSplitHeader` | boolean | `true` | Hide the blue move/unsplit header bar that normally appears on hover in split view. |
+| `userscripts.tabslide.shiftDragRearrange` | boolean | `true` | Hold **Shift** and drag a split panel to rearrange it within the group. While Shift is held, panels become draggable — press and hold the left mouse button on a panel, then drag it onto another panel to swap their positions. |
 
 The installer copies a `user.js` into your profile that declares all preferences with their default values. After the next Zen start they appear in `about:config` when you search for `userscripts.tabslide`.
 
