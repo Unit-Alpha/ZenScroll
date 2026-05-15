@@ -33,8 +33,8 @@
     for (let steps = 0; steps < len; steps++) {
       idx = (idx + direction + len) % len;
       const candidate = tabs[idx];
-      // Skip tabs that are siblings in the same split-view
       if (currentGroup && currentGroup.has(candidate)) continue;
+      window._zenScrollDir = direction;
       gBrowser.selectedTab = candidate;
       return;
     }

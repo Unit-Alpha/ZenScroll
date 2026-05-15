@@ -86,12 +86,20 @@
     const newIndex = getVisibleIndex(newTab);
     if (newIndex === lastIndex) { lastIndex = newIndex; lastTab = newTab; return; }
 
-    // Slide direction: shortest path on the circular tab band.
-    const totalTabs  = Array.from(gBrowser.tabs).filter(isRealTab).length;
-    const directDelta  = newIndex - lastIndex;
-    const wrappedDelta = directDelta > 0 ? directDelta - totalTabs : directDelta + totalTabs;
-    const useDelta     = Math.abs(wrappedDelta) < Math.abs(directDelta) ? wrappedDelta : directDelta;
-    const goingRight   = useDelta > 0;
+    // Slide direction: prefer the direction passed by shift-scroll (reliable for
+    // split groups at band boundaries); fall back to shortest-path index calculation
+    // for click-based navigation.
+    let goingRight;
+    if (typeof window._zenScrollDir === 'number') {
+      goingRight = window._zenScrollDir > 0;
+      delete window._zenScrollDir;
+    } else {
+      const totalTabs    = Array.from(gBrowser.tabs).filter(isRealTab).length;
+      const directDelta  = newIndex - lastIndex;
+      const wrappedDelta = directDelta > 0 ? directDelta - totalTabs : directDelta + totalTabs;
+      const useDelta     = Math.abs(wrappedDelta) < Math.abs(directDelta) ? wrappedDelta : directDelta;
+      goingRight = useDelta > 0;
+    }
 
     const DURATION        = Services.prefs.getIntPref("userscripts.tabslide.duration", 500);
     const VERTICAL        = Services.prefs.getBoolPref("userscripts.tabslide.vertical", false);
