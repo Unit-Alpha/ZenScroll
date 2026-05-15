@@ -63,3 +63,18 @@ The installer copies a `user.js` into your profile that declares all preferences
 ## Credits
 
 - [fx-autoconfig](https://github.com/MrOtherGuy/fx-autoconfig) by MrOtherGuy — userscript loader for Firefox-based browsers.
+
+## Known Issues
+
+### Panels shrink slightly during animation (Transparent Zen mod)
+
+If tab panels appear to shrink or compress slightly during the slide animation, this is caused by the **Transparent Zen** mod being active.
+
+**Fix:** Disable the Transparent Zen mod in Zen's mod settings.
+
+You do **not** lose your transparent background by doing this — and this is actually a quirk you can use to your advantage:
+
+1. In the Transparent Zen mod settings, make sure the transparency toggle is **on**.
+2. Then **disable the mod itself** in Zen's mod list.
+
+Because of how the mod is built, the transparency it applied stays active even after the mod is disabled. The mod's interference with animations does not. You end up with a transparent Zen and no animation bug.
