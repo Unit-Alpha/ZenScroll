@@ -38,12 +38,18 @@ Restart Zen Browser after installation.
 
 ## Uninstall
 
-Remove the two files from your profile's `chrome/JS/` folder:
+The easiest way is to run the install script again and choose **Uninstall** from the menu. It will ask what you want to remove:
+
+- **Userscripts only** — removes the two `.uc.js` files; fx-autoconfig stays intact
+- **Userscripts + user.js preferences** — also cleans up the `about:config` entries
+- **Everything** — additionally removes fx-autoconfig from the profile and the Zen application folder
+
+Alternatively you can remove files manually. The userscripts are in your profile's `chrome/JS/` folder:
 
 - `tab-slide-animation.uc.js`
 - `shift-scroll-tabs.uc.js`
 
-Then restart Zen. The fx-autoconfig files can stay; they don't do anything without scripts present.
+The fx-autoconfig files can stay if you want to use other userscripts later; they don't do anything without scripts present.
 
 ## Options
 
