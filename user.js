@@ -12,3 +12,7 @@ user_pref("userscripts.tabslide.invertAnimation", false);
 
 // Invert the Shift+Scroll direction (default: false)
 user_pref("userscripts.tabslide.invertScroll", false);
+
+// In split view, hover-to-focus: hovering over a panel makes it the active
+// browser so reload/back/forward act on it without clicking first (default: false)
+user_pref("userscripts.tabslide.splitFocusFollowsMouse", false);

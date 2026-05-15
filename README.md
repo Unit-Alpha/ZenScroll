@@ -32,7 +32,7 @@ Set-ExecutionPolicy -Scope Process Bypass
 1. Copies `fx-autoconfig` files into the Zen application directory.
    This is a one-time loader that enables `.uc.js` userscripts in Zen/Firefox.
 2. Copies the userscript loader (`chrome/utils/`) into your Zen profile.
-3. Copies the two userscripts into `chrome/JS/` in your profile.
+3. Copies the three userscripts into `chrome/JS/` in your profile.
 
 Restart Zen Browser after installation.
 
@@ -48,6 +48,7 @@ Alternatively you can remove files manually. The userscripts are in your profile
 
 - `tab-slide-animation.uc.js`
 - `shift-scroll-tabs.uc.js`
+- `split-focus-follows-mouse.uc.js`
 
 The fx-autoconfig files can stay if you want to use other userscripts later; they don't do anything without scripts present.
 
@@ -61,6 +62,7 @@ All options are set in `about:config` and take effect immediately without restar
 | `userscripts.tabslide.vertical` | boolean | `false` | Slide top/bottom instead of left/right |
 | `userscripts.tabslide.invertAnimation` | boolean | `false` | Flip the visual slide direction (tab order unchanged) |
 | `userscripts.tabslide.invertScroll` | boolean | `false` | Invert the Shift+Scroll direction |
+| `userscripts.tabslide.splitFocusFollowsMouse` | boolean | `false` | In split view, hovering the mouse over a panel makes it the active browser — so reload/back/forward act on the panel under the cursor without needing to click it first |
 
 The installer copies a `user.js` into your profile that declares all preferences with their default values. After the next Zen start they appear in `about:config` when you search for `userscripts.tabslide`.
 
@@ -72,15 +74,9 @@ The installer copies a `user.js` into your profile that declares all preferences
 
 ## Known Issues
 
-### Panels shrink slightly during animation (Transparent Zen mod)
+### Animation glitches caused by other Zen mods
 
-If tab panels appear to shrink or compress slightly during the slide animation, this is caused by the **Transparent Zen** mod being active.
+Some Zen mods include their own tab-switch animations (e.g. scale, fade, or blur effects). These can conflict with ZenScroll and cause visual glitches like panels shrinking, flickering, or animating incorrectly.
 
-**Fix:** Disable the Transparent Zen mod in Zen's mod settings.
-
-You do **not** lose your transparent background by doing this — and this is actually a quirk you can use to your advantage:
-
-1. In the Transparent Zen mod settings, make sure the transparency toggle is **on**.
-2. Then **disable the mod itself** in Zen's mod list.
-
-Because of how the mod is built, the transparency it applied stays active even after the mod is disabled. The mod's interference with animations does not. You end up with a transparent Zen and no animation bug.
+- If the mod has settings, look for a tab-switch animation option and disable it — you don't need to disable the mod itself.
+- If the mod has no settings, disable the mod entirely.
