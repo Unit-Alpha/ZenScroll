@@ -98,7 +98,7 @@ if [[ "$ACTION" == "install" ]]; then
   echo "Installing user.js..."
   if [[ -f "$PROFILE/user.js" ]]; then
     while IFS= read -r line; do
-      pref=$(echo "$line" | grep -o 'userscripts\.tabslide\.[^"]*' | head -1)
+      pref=$(echo "$line" | grep -o 'userscripts\.tabslide\.[^"]*' | head -1 || true)
       if [[ -n "$pref" ]] && ! grep -qF "$pref" "$PROFILE/user.js"; then
         echo "$line" >> "$PROFILE/user.js"
       fi
