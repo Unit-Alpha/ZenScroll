@@ -1,0 +1,32 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build zip
+        run: |
+          zip -r ZenScroll.zip fx-autoconfig/ scripts/ user.js install.sh install.ps1 README.md
+
+      - name: Create release v1.3.1
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.3.1
+          name: v1.3.1
+          body: |
+            ### Bug fixes
+            - Fixed missing userscripts (`split-focus-follows-mouse`, `split-view-drag`) in the uninstall routine of `install.sh` and `install.ps1`
+          files: ZenScroll.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
