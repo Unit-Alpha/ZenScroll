@@ -136,7 +136,9 @@ echo ""
 if [[ -n "$PROFILE" ]]; then
   for f in \
     "$PROFILE/chrome/JS/tab-slide-animation.uc.js" \
-    "$PROFILE/chrome/JS/shift-scroll-tabs.uc.js"; do
+    "$PROFILE/chrome/JS/shift-scroll-tabs.uc.js" \
+    "$PROFILE/chrome/JS/split-focus-follows-mouse.uc.js" \
+    "$PROFILE/chrome/JS/split-view-drag.uc.js"; do
     if [[ -f "$f" ]]; then rm "$f"; echo "Removed: $f"; fi
   done
 fi
