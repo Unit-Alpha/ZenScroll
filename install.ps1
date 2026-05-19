@@ -129,7 +129,9 @@ Write-Host ""
 if ($ProfilePath) {
     foreach ($f in @(
         "$ProfilePath\chrome\JS\tab-slide-animation.uc.js",
-        "$ProfilePath\chrome\JS\shift-scroll-tabs.uc.js"
+        "$ProfilePath\chrome\JS\shift-scroll-tabs.uc.js",
+        "$ProfilePath\chrome\JS\split-focus-follows-mouse.uc.js",
+        "$ProfilePath\chrome\JS\split-view-drag.uc.js"
     )) {
         if (Test-Path $f) { Remove-Item $f; Write-Host "Removed: $f" }
     }
