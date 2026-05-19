@@ -1,10 +1,10 @@
 name: Create Release
 
 on:
-  push:
-    branches:
-      - copilot/create-release-with-current-files
   workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   release:
